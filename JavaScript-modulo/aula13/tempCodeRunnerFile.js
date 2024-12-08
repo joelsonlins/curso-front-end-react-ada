@@ -1,0 +1,1 @@
+console.log("Antes da criação da promise");
