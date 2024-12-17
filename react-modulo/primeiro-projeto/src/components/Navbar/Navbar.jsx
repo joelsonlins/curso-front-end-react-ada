@@ -1,8 +1,8 @@
 import React from 'react';
 import "./styles.css"
 
-export class Navbar extends React.Component{
-render(){
+export function Navbar(){
+
   return (
     <header>
     <nav id="navbar">
@@ -12,10 +12,10 @@ render(){
         </div>
         <div>
         <ul className="nav-list">
-        <li><a href="#">Home</a></li>
-        <li><a href="#">Trending</a></li>
-        <li><a href="#">Categories</a></li>
-        <li><a href="#">About us</a></li>
+        <li><a href="https://www.example.com">Home</a></li>
+        <li><a href="https://www.example.com">Trending</a></li>
+        <li><a href="https://www.example.com">Categories</a></li>
+        <li><a href="https://www.example.com">About us</a></li>
         </ul>
       </div>
     </nav>
@@ -23,7 +23,5 @@ render(){
     
    </header>
   )
-
-}
 }
 
