@@ -1,7 +1,8 @@
 import React from "react";
 import "./styles/App.css"
-import { Navbar } from "./components/Navbar/Navbar";
-import { Article } from "./components/Article/Article";
+//import { Navbar } from "./components/Navbar/Navbar";
+import { Counter } from "./components/Counter/Counter";
+//import { Article } from "./components/Article/Article";
 
 
 // Componente em classe é uma classe que herda a class Component do React, 
@@ -15,9 +16,10 @@ class App extends React.Component {
   render() {
     return (
       <>
-      <Navbar/>
-      {/* <Counter/> */}
-      <section id="articles">
+      
+      <Counter/>
+      {/* <Navbar/> */}
+      {/* <section id="articles">
       <Article 
       title="COVID-19: What You Need to Know" 
       provider="NASA" 
@@ -34,7 +36,7 @@ class App extends React.Component {
       description="Lorem, ipsum dolor sit amet consectetur adipisicing elit. Perferendis reprehenderit facilis, natus dicta illum rerum ducimus qui et quae eveniet quis at itaque sit, molestias id repellat quibusdam debitis perspiciatis?" 
       thumbnail="https://i.ytimg.com/vi/Lc2Uv4_-GZ0/maxresdefault.jpg"/>
       
-      </section>
+      </section> */}
       </>
     );
   }

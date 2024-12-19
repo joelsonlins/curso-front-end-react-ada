@@ -1,6 +1,8 @@
 import { StatsCard } from "../StatsCard/StatsCard";
 import styles from "./styles.module.scss";
 
+import { useState } from "react";
+
 export const Header: React.FC = () => {
   return (
     <header className={styles.header}>
