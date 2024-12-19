@@ -1,10 +1,4 @@
-#article img{
-  width: 30%;
-  height: auto;
-  border-radius: 10px;
-  object-fit: cover;
-  
-}
+
 #article{
   display: flex;
   gap: 1rem;
@@ -22,6 +16,7 @@
   color: #8695a4;
   margin-bottom: 1rem;
 }
-#article .article-infos p{
-
-}
+#article img{
+  max-width: 300px;
+  border-radius: 5px;
+  }

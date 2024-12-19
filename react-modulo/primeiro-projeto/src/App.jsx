@@ -1,45 +1,59 @@
-import React from "react";
-import "./styles/App.css"
-//import { Navbar } from "./components/Navbar/Navbar";
-import { Counter } from "./components/Counter/Counter";
-//import { Article } from "./components/Article/Article";
+import React, { useEffect, useState } from "react";
+import "./styles/App.css";
+import { Navbar } from "./components/Navbar/Navbar";
+import { Article } from "./components/Article/Article";
+import axios from "axios";
+import { Audio, ThreeDots } from 'react-loader-spinner'
 
+function App() {
+  const [news, setNews] = useState([]); // Estado para armazenar as notícias
+  const [loading, setLoading] = useState(true); // Estado para controlar o carregamento
+  const [error, setError] = useState(null); // Estado para capturar erros
 
-// Componente em classe é uma classe que herda a class Component do React, 
-// e retorna HTML dentro do método render.
+  useEffect(() => {
+    async function loadNews() {
+      try {
+        const response = await axios.get("https://api.spaceflightnewsapi.net/v4/articles");
+        setNews(response.data.results || response.data); // Corrigido para lidar com resultados da API
+        setLoading(false); // Finaliza o carregamento
+      } catch (err) {
+        setError("Erro ao carregar as notícias."); // Define o erro
+        setLoading(false); // Finaliza o carregamento mesmo com erro
+      }
+    }
 
-// Componente funciona é uma função que retorna um HTML
+    loadNews();
+  }, []);
 
-class App extends React.Component {
-
-  // Método responsável por rederizar o conteúdo HTML do nosso component
-  render() {
-    return (
-      <>
-      
-      <Counter/>
-      {/* <Navbar/> */}
-      {/* <section id="articles">
-      <Article 
-      title="COVID-19: What You Need to Know" 
-      provider="NASA" 
-      description="Lorem, ipsum dolor sit amet consectetur adipisicing elit. Perferendis reprehenderit facilis, natus dicta illum rerum ducimus qui et quae eveniet quis at itaque sit, molestias id repellat quibusdam debitis perspiciatis?" 
-      thumbnail="https://siyanclinical.com/wp-content/uploads/2020/06/covid-article.png"/>
-      <Article 
-      title="What is an article?"
-      provider="MEC"
-      description="Lorem, ipsum dolor sit amet consectetur adipisicing elit. Perferendis reprehenderit facilis, natus dicta illum rerum ducimus qui et quae eveniet quis at itaque sit, molestias id repellat quibusdam debitis perspiciatis?" 
-      thumbnail="https://www.worksheetsplanet.com/wp-content/uploads/2023/03/What-is-an-article.jpg"/>
-       <Article 
-      title="Best programing Languages for Hacking"
-      provider="TECH+"
-      description="Lorem, ipsum dolor sit amet consectetur adipisicing elit. Perferendis reprehenderit facilis, natus dicta illum rerum ducimus qui et quae eveniet quis at itaque sit, molestias id repellat quibusdam debitis perspiciatis?" 
-      thumbnail="https://i.ytimg.com/vi/Lc2Uv4_-GZ0/maxresdefault.jpg"/>
-      
-      </section> */}
-      </>
-    );
-  }
+  return (
+    <>
+      <Navbar />
+      <section id="articles">
+        {loading ? (
+         <div style={{height:'400px', width:'100%', display:'flex', justifyContent:'center', alignItems:'center'}}> <ThreeDots
+         height="80"
+         width="80"
+         radius="9"
+         color="white"
+         ariaLabel="loading"     
+         
+       /></div>// Exibe mensagem enquanto carrega
+        ) : error ? (
+          <p>{error}</p> // Exibe mensagem de erro, se houver
+        ) : (
+          news.map((article) => (
+            <Article
+              key={article.id} // Identificador único para o React
+              title={article.title}
+              provider={article.news_site}
+              description={article.summary}
+              thumbnail={article.image_url}
+            />
+          ))
+        )}
+      </section>
+    </>
+  );
 }
 
 export default App;
