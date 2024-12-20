@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react"
+import { useMemo,useCallback, useState } from "react"
 
 interface MemoizationProps{
   financialData: {
@@ -23,6 +23,13 @@ export const Memoization: React.FC<MemoizationProps> = ({financialData}) =>{
       return total += outcome
     }, 0)
   },[financialData.outcomes])
+
+  const aplicarDesconto = useCallback (
+    (desconto: number) =>{
+      return totalOutcomes * (1 -desconto)
+    },
+    [totalOutcomes]
+  )
   
 
   return(
