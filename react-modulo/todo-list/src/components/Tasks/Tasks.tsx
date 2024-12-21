@@ -1,15 +1,11 @@
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useContext, useEffect, useState } from "react";
 import styles from "./styles.module.scss";
-
-interface Task {
-  title: string;
-  done: boolean;
-  id: number;
-}
+import { TasksContext } from "../../context/TasksContext";
 
 export const Tasks: React.FC = () => {
   const [taskTitle, setTaskTitle] = useState("");
-  const [tasks, setTasks] = useState([] as Task[]);
+
+  const { tasks, setTasks } = useContext(TasksContext);
 
   // Função disparada quando o usuário está querendo adicionar uma nova tarefa
   function handleSubmitAddTask(event: FormEvent) {
@@ -19,24 +15,37 @@ export const Tasks: React.FC = () => {
       alert("Não é possível adicionar uma tarefa com menos de 3 letras.");
       return;
     }
-    // adicione a tarefa
+    // Adiciona a tarefa
     const newTasks = [
-      ...tasks, // pega todas as tarefas que já existam e coloca nesse novo valor do estado de tarefas
+      ...tasks, // Pega todas as tarefas que já existam e coloca nesse novo valor do estado de tarefas
       { id: new Date().getTime(), title: taskTitle, done: false },
     ];
     setTasks(newTasks);
-    localStorage.setItem('tasks', JSON.stringify(newTasks))
+    localStorage.setItem("tasks", JSON.stringify(newTasks));
 
     setTaskTitle("");
   }
-  useEffect(()=>{
-    const tasksOnLocalStorage = localStorage.getItem("tasks");
+  // função para mostrar se a tarefa foi concluida ou não
+  function handleToggleTaskStatus(taskId: number) {
+    const newTasks = tasks.map((task) => {
+      if (task.id === taskId) {
+        return {
+          ...task,
+          done: !task.done,
+        };
+      }
+      return task;
+    });
+    setTasks(newTasks);
+    localStorage.setItem("tasks", JSON.stringify(newTasks));
+  }
 
-    if (tasksOnLocalStorage) {
-      setTasks(JSON.parse(tasksOnLocalStorage));
-    }
-
-  }, [])
+  // Função para remover uma tarefa
+  function handleRemoveTask(taskId: number) {
+    const filteredTasks = tasks.filter((task) => task.id !== taskId);
+    setTasks(filteredTasks);
+    localStorage.setItem("tasks", JSON.stringify(filteredTasks));
+  }
 
   return (
     <section className={styles.container}>
@@ -53,12 +62,28 @@ export const Tasks: React.FC = () => {
         </div>
         <button type="submit">Adicionar tarefa</button>
       </form>
+
       <ul>
         {tasks.map((task) => {
           return (
             <li key={task.id}>
-              <input type="checkbox" id={`task-${task.id}`} />
-              <label htmlFor={`task-${task.id}`}>{task.title}</label>
+              <input
+                type="checkbox"
+                id={`task-${task.id}`}
+                onChange={() => handleToggleTaskStatus(task.id)}
+              />
+              <label
+                htmlFor={`task-${task.id}`}
+                className={task.done ? styles.done : ""}
+              >
+                {task.title}
+              </label>
+              <button
+                onClick={() => handleRemoveTask(task.id)}
+                className={styles.removeButton}
+              >
+                Remover
+              </button>
             </li>
           );
         })}
