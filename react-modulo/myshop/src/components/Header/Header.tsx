@@ -1,27 +1,56 @@
 import { Cart } from "../Cart/Cart";
 import { useState } from "react";
-import { FiLogIn, FiLogOut, FiShoppingCart  } from "react-icons/fi";
+import { FiLogIn, FiLogOut, FiShoppingCart } from "react-icons/fi";
 import * as S from "./styles";
+import { useDispatch, useSelector } from "react-redux";
+import { Rootreducer } from "../../redux/root-reducer";
 
 export const Header: React.FC = () => {
-const [showCart, setShowCart] = useState(false)
-  const isLogged = false;
+  const { user } = useSelector(
+    (rootReducer: Rootreducer) => rootReducer.userReducer
+  );
+
+  const dispatch = useDispatch();
+
+  const [showCart, setShowCart] = useState(false);
+  const isLogged = user !== null;
+
+  function handleUserAuth() {
+    // usuário não está logado
+    if (user == null) {
+      // dspachar a action de login
+      dispatch({
+        type: "user/login",
+        payload: {
+          name: "Walisson Silva",
+          email: "walssin@email.com",
+        },
+      });
+    } else {
+      dispatch({
+        type: "user/logout",
+      });
+    }
+  }
   return (
     <S.StyledHeader>
       <S.Wrapper>
         <S.HeaderTitle>MyShop.</S.HeaderTitle>
 
         <S.ButtonsWrapper>
-          <S.AuthButton isLogged={isLogged}>{isLogged ? "Logout" : "Login"}
-          {isLogged ? <FiLogOut/> : <FiLogIn/>} </S.AuthButton>
-          <S.Cartbutton onClick={()=> setShowCart(!showCart)}>
+          {/* botão de login e logout */}
+          <S.AuthButton isLogged={isLogged} onClick={handleUserAuth}>
+            {isLogged ? "Logout" : "Login"}
+            {isLogged ? <FiLogOut /> : <FiLogIn />}{" "}
+          </S.AuthButton>
+          {/* botão carrinho */}
+          <S.Cartbutton onClick={() => setShowCart(!showCart)}>
             Carrinho <FiShoppingCart />
-            </S.Cartbutton>
+          </S.Cartbutton>
         </S.ButtonsWrapper>
-
       </S.Wrapper>
 
-      <Cart showCart={showCart}/>
+      <Cart showCart={showCart} />
     </S.StyledHeader>
   );
 };

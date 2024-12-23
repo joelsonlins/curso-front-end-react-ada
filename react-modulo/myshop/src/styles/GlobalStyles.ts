@@ -16,6 +16,15 @@ export const GlobalStyles = createGlobalStyle`
 
   body, button, input{
     font-family: "Poppins", serif;
-    
+  }
+
+  button{
+    cursor: pointer;
+    transition: 0.3s;
+
+    &:hover{
+      filter: brightness(1.2);
+      transition: 0.3s;
+    }
   }
 `
