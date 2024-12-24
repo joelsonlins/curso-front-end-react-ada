@@ -3,11 +3,11 @@ import { useState } from "react";
 import { FiLogIn, FiLogOut, FiShoppingCart } from "react-icons/fi";
 import * as S from "./styles";
 import { useDispatch, useSelector } from "react-redux";
-import { Rootreducer } from "../../redux/root-reducer";
+import { RootReducer } from "../../redux/root-reducer";
 
 export const Header: React.FC = () => {
   const { user } = useSelector(
-    (rootReducer: Rootreducer) => rootReducer.userReducer
+    (rootReducer: RootReducer) => rootReducer.userReducer
   );
 
   const dispatch = useDispatch();
